@@ -214,6 +214,14 @@ $('start-form').addEventListener('submit', (e) => {
 
 $('next-btn').addEventListener('click', submitAnswer);
 
+// Новий прохід — новий запис у базі; ім'я підставляємо з попереднього.
+$('retry-btn').addEventListener('click', () => {
+  const name = state ? state.name : '';
+  clearState();
+  try { sessionStorage.setItem('ai-quiz-name', name); } catch (e) {}
+  location.reload();
+});
+
 // index.html?reset — почати заново на цьому пристрої.
 if (new URLSearchParams(location.search).has('reset')) {
   clearState();
@@ -236,6 +244,7 @@ if (new URLSearchParams(location.search).has('reset')) {
   } else {
     state = null;
     $('question-count').textContent = pluralQuestions(QUESTIONS.length);
+    try { $('name').value = sessionStorage.getItem('ai-quiz-name') || ''; } catch (e) {}
     $('start-btn').disabled = false;
     show('screen-start');
   }
