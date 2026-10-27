@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0057b7">
+  <meta name="robots" content="noindex">
+  <title>Результати — ШІ в навчанні</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__title">Панель викладача</div>
+    <div class="live" id="live"><span class="live__dot"></span><span id="live-text">Підключення…</span></div>
+  </header>
+
+  <main class="container container--wide">
+    <section class="stats">
+      <div class="stat"><div class="stat__value" id="stat-total">0</div><div class="stat__label">Учасників</div></div>
+      <div class="stat"><div class="stat__value" id="stat-active">0</div><div class="stat__label">Проходять</div></div>
+      <div class="stat"><div class="stat__value" id="stat-done">0</div><div class="stat__label">Завершили</div></div>
+      <div class="stat"><div class="stat__value" id="stat-avg">—</div><div class="stat__label">Середній бал</div></div>
+    </section>
+
+    <section class="card">
+      <h2 class="card__title">Студенти</h2>
+      <div id="students" class="students"></div>
+      <p id="empty" class="muted center">Поки що ніхто не почав. Студенти з'являться тут одразу після введення імені.</p>
+    </section>
+
+    <section class="card">
+      <h2 class="card__title">Правильні відповіді по питаннях</h2>
+      <div id="questions-stats" class="qstats"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.75.0/dist/umd/supabase.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/questions.js"></script>
+  <script src="js/teacher.js"></script>
+</body>
+</html>
