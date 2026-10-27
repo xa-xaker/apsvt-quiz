@@ -1,5 +1,6 @@
+// Запасний набір: використовується, якщо таблиця questions у базі недоступна.
 // correct — індекс правильної відповіді (з нуля).
-const QUESTIONS = [
+let QUESTIONS = [
   {
     text: 'Яке використання ШІ під час виконання домашнього завдання є найбільш доброчесним?',
     options: [
@@ -51,3 +52,12 @@ const QUESTIONS = [
     correct: 1,
   },
 ];
+
+const OPTION_LETTERS = 'АБВГДЕ';
+
+// Завантажує актуальні питання з бази (керуються в admin.html).
+async function loadQuestions(db) {
+  const { data, error } = await db.from('questions').select('text, options, correct').order('position');
+  if (!error && data.length) QUESTIONS = data;
+  return QUESTIONS;
+}

@@ -70,7 +70,7 @@ function renderStats(list) {
 // Стовпчикова діаграма: скільки завершених студентів набрали 0…N балів.
 function renderChart(done) {
   const counts = Array(QUESTIONS.length + 1).fill(0);
-  done.forEach((r) => { counts[r.score] += 1; });
+  done.forEach((r) => { counts[Math.min(r.score, QUESTIONS.length)] += 1; });
   const max = Math.max(1, ...counts);
   const word = (n) => (n % 10 === 1 && n % 100 !== 11 ? 'студент' : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? 'студенти' : 'студентів');
   $('chart').setAttribute('aria-label', counts.map((c, s) => `${s} балів: ${c}`).join(', '));
@@ -149,6 +149,9 @@ db.channel('participants-live')
     else rows.set(payload.new.id, payload.new);
     render();
   })
+  .on('postgres_changes', { event: '*', schema: 'public', table: 'questions' }, () => {
+    loadQuestions(db).then(render);
+  })
   .subscribe((status) => {
     if (status === 'SUBSCRIBED') {
       setLive(true, 'Онлайн');
@@ -162,4 +165,4 @@ setInterval(tick, 1000);
 // Підстраховка на випадок, якщо realtime-подія загубилася.
 setInterval(loadAll, 20000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) loadAll(); });
-loadAll();
+loadQuestions(db).then(loadAll);

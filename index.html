@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0057b7">
   <title>ШІ в навчанні — опитування</title>
-  <link rel="stylesheet" href="css/style.css?v=2">
+  <link rel="stylesheet" href="css/style.css?v=3">
 </head>
 <body>
   <header class="topbar">
@@ -17,14 +17,14 @@
   </header>
 
   <main class="container">
-    <section id="screen-start" class="card">
+    <section id="screen-start" class="card" hidden>
       <h1>Опитування</h1>
-      <p class="muted">5 питань, по 4 варіанти відповіді. На проходження є <b id="duration-label">5 хв</b>. Таймер стартує після введення імені.</p>
+      <p class="muted"><span id="question-count">5 питань</span> з варіантами відповідей. На проходження є <b id="duration-label">5 хв</b>. Таймер стартує після введення імені.</p>
       <form id="start-form" novalidate>
         <label for="name" class="label">Ваше ім'я та прізвище</label>
         <input id="name" class="input" type="text" autocomplete="name" maxlength="60" placeholder="Напр., Олена Коваленко" required>
         <p id="start-error" class="error" hidden></p>
-        <button id="start-btn" class="btn btn--primary" type="submit">Почати</button>
+        <button id="start-btn" class="btn btn--primary" type="submit" disabled>Почати</button>
       </form>
     </section>
 
@@ -51,8 +51,8 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.75.0/dist/umd/supabase.min.js"></script>
-  <script src="js/config.js?v=2"></script>
-  <script src="js/questions.js?v=2"></script>
-  <script src="js/quiz.js?v=2"></script>
+  <script src="js/config.js?v=3"></script>
+  <script src="js/questions.js?v=3"></script>
+  <script src="js/quiz.js?v=3"></script>
 </body>
 </html>

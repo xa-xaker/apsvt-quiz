@@ -2,7 +2,7 @@ const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const STORE_KEY = 'ai-quiz-session';
 const $ = (id) => document.getElementById(id);
 
-// { id, name, startedAt (ms), answers: number[], status, finishedAt }
+// { id, name, startedAt (ms), answers: number[], status, finishedAt, questions }
 let state = null;
 let selected = null;
 let timerId = null;
@@ -101,7 +101,7 @@ function renderQuestion() {
     btn.className = 'option';
     btn.setAttribute('role', 'radio');
     btn.setAttribute('aria-checked', 'false');
-    btn.innerHTML = `<span class="option__letter">${'АБВГ'[idx]}</span><span class="option__text"></span>`;
+    btn.innerHTML = `<span class="option__letter">${OPTION_LETTERS[idx]}</span><span class="option__text"></span>`;
     btn.querySelector('.option__text').textContent = text;
     btn.addEventListener('click', () => {
       selected = idx;
@@ -174,7 +174,7 @@ async function start(name) {
     btn.textContent = 'Почати';
     return;
   }
-  state = { id: data.id, name, startedAt: Date.now(), answers: [], status: 'in_progress', finishedAt: null };
+  state = { id: data.id, name, startedAt: Date.now(), answers: [], status: 'in_progress', finishedAt: null, questions: QUESTIONS };
   saveState();
   resume();
 }
@@ -191,6 +191,11 @@ function resume() {
   show('screen-quiz');
   renderQuestion();
   startTimer();
+}
+
+function pluralQuestions(n) {
+  const few = n % 10 >= 1 && n % 10 <= 4 && !(n % 100 >= 11 && n % 100 <= 14);
+  return `${n} ${few ? 'питання' : 'питань'}`;
 }
 
 $('duration-label').textContent = `${Math.round(QUIZ_DURATION_SEC / 60)} хв`;
@@ -215,10 +220,23 @@ if (new URLSearchParams(location.search).has('reset')) {
   history.replaceState(null, '', location.pathname);
 }
 
-state = loadState();
-if (state && state.id) {
-  resume();
-} else {
-  state = null;
-  show('screen-start');
-}
+// Студент проходить тест з тим набором питань, який був на момент старту.
+(async () => {
+  state = loadState();
+  if (state && state.id && Array.isArray(state.questions)) {
+    QUESTIONS = state.questions;
+    resume();
+    return;
+  }
+  await loadQuestions(db);
+  if (state && state.id) {
+    state.questions = QUESTIONS;
+    saveState();
+    resume();
+  } else {
+    state = null;
+    $('question-count').textContent = pluralQuestions(QUESTIONS.length);
+    $('start-btn').disabled = false;
+    show('screen-start');
+  }
+})();

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0057b7">
+  <meta name="robots" content="noindex">
+  <title>Адмінпанель — ШІ в навчанні</title>
+  <link rel="stylesheet" href="css/style.css?v=3">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__title">Адмінпанель</div>
+    <div class="topbar__links" id="topbar-links" hidden>
+      <a href="teacher.html">Результати</a>
+      <button id="logout-btn" class="link-btn" type="button">Вийти</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="screen-login" class="card" hidden>
+      <h1>Вхід для викладача</h1>
+      <form id="login-form" novalidate>
+        <label for="password" class="label">Пароль</label>
+        <input id="password" class="input" type="password" autocomplete="current-password" required>
+        <p id="login-error" class="error" hidden></p>
+        <button id="login-btn" class="btn btn--primary" type="submit">Увійти</button>
+      </form>
+    </section>
+
+    <section id="screen-editor" hidden>
+      <div class="card">
+        <h1>Питання</h1>
+        <p class="muted">Позначте правильну відповідь кружечком ліворуч. Зміни стануть доступні студентам після збереження. Студенти, які вже почали тест, дограють його зі старим набором питань.</p>
+      </div>
+
+      <div id="questions" class="editor"></div>
+
+      <button id="add-question" class="btn btn--ghost" type="button">+ Додати питання</button>
+
+      <div class="card danger">
+        <h2 class="card__title">Результати студентів</h2>
+        <p class="muted">Видалити всі результати перед новою групою. Цю дію неможливо скасувати.</p>
+        <button id="clear-results" class="btn btn--danger" type="button">Очистити результати</button>
+        <p id="clear-status" class="muted" hidden></p>
+      </div>
+    </section>
+  </main>
+
+  <div id="savebar" class="savebar" hidden>
+    <span id="save-status" class="savebar__status">Є незбережені зміни</span>
+    <button id="save-btn" class="btn btn--primary savebar__btn" type="button">Зберегти</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.75.0/dist/umd/supabase.min.js"></script>
+  <script src="js/config.js?v=3"></script>
+  <script src="js/questions.js?v=3"></script>
+  <script src="js/admin.js?v=3"></script>
+</body>
+</html>
