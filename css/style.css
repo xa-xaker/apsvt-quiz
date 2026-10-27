@@ -230,3 +230,17 @@ h1 { margin: 0 0 8px; font-size: 26px; color: var(--blue-dark); }
 @media (min-width: 960px) {
   .students { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* Діаграма розподілу балів */
+.chart { display: flex; align-items: flex-end; gap: 8px; height: 180px; padding-top: 22px; border-bottom: 1px solid var(--border); }
+.chart__col { position: relative; flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; cursor: default; }
+.chart__value { font-size: 14px; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; margin-bottom: 4px; }
+.chart__bar { width: 100%; max-width: 56px; min-height: 2px; background: var(--blue); border-radius: 4px 4px 0 0; transition: height .4s; }
+.chart__bar--empty { background: var(--blue-light); }
+.chart__col:hover .chart__bar:not(.chart__bar--empty) { background: var(--blue-dark); }
+.chart__label { position: absolute; bottom: -24px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.chart__note { font-size: 13px; margin: 32px 0 0; }
+.chart__col::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%); white-space: nowrap; padding: 6px 10px; border-radius: 8px; background: var(--text); color: #fff; font-size: 12px; opacity: 0; pointer-events: none; transition: opacity .15s; z-index: 2; }
+.chart__col:hover::after { opacity: 1; }
+.chart__col:first-child::after { left: 0; transform: none; }
+.chart__col:last-child::after { left: auto; right: 0; transform: none; }

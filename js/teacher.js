@@ -49,6 +49,8 @@ function renderStats(list) {
     ? (done.reduce((s, r) => s + r.score, 0) / done.length).toFixed(1).replace('.', ',')
     : '—';
 
+  renderChart(done);
+
   $('questions-stats').innerHTML = QUESTIONS.map((q, i) => {
     const answered = list.filter((r) => Array.isArray(r.answers) && r.answers.length > i);
     const correct = answered.filter((r) => r.answers[i] === q.correct).length;
@@ -63,6 +65,21 @@ function renderStats(list) {
         <div class="qstat__meta">${answered.length ? `${pct}% · ${correct} з ${answered.length}` : 'ще немає відповідей'}</div>
       </div>`;
   }).join('');
+}
+
+// Стовпчикова діаграма: скільки завершених студентів набрали 0…N балів.
+function renderChart(done) {
+  const counts = Array(QUESTIONS.length + 1).fill(0);
+  done.forEach((r) => { counts[r.score] += 1; });
+  const max = Math.max(1, ...counts);
+  const word = (n) => (n % 10 === 1 && n % 100 !== 11 ? 'студент' : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? 'студенти' : 'студентів');
+  $('chart').setAttribute('aria-label', counts.map((c, s) => `${s} балів: ${c}`).join(', '));
+  $('chart').innerHTML = counts.map((c, s) => `
+    <div class="chart__col" data-tip="${s} з ${QUESTIONS.length} балів: ${c} ${word(c)}">
+      <div class="chart__value">${c || ''}</div>
+      <div class="chart__bar${c ? '' : ' chart__bar--empty'}" style="height:${(c / max) * 100}%"></div>
+      <div class="chart__label">${s}</div>
+    </div>`).join('');
 }
 
 function studentHtml(r) {
